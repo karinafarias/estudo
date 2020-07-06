@@ -1,5 +1,12 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"%>
-
+<%
+  if (session.getAttribute("user") == null)
+  {
+    String address = "login.jsp";
+    response.sendRedirect(address);
+  }
+    
+%>
 
 
 <!DOCTYPE html>
@@ -27,52 +34,90 @@
                 <a class="navbar-brand js-scroll-trigger" href="index.jsp">DoaCentro</a><button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#sobre">Sobre</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="cadastro.jsp">Cadastre-se</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="entrar.jsp">Entrar</a></li>
+                       
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="cadastro-centro.jsp">Cadastrar Centro</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.jsp">Sair</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- Masthead-->
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <!-- Masthead Avatar Image--><img class="masthead-avatar mb-5" src="assets/img/Logo.png" alt="" /><!-- Masthead Heading-->
-                <h1 class="masthead-heading text-uppercase mb-0">DoaCentro</h1>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Masthead Subheading-->
-                <p class="masthead-subheading font-weight-light mb-0">Conectando a bondade</p>
-            </div>
+
+       
+
+
+        <header class= bg-primary text-white text-center">
+           
+           
+            <div id="map"></div>
+           
+            <style>
+               
+                #map {
+                  height: 100%;
+                }
+               
+                html, body {
+                  height: 100%;
+                  margin: 0;
+                  padding: 0;
+                }
+              </style>
+           
+           
+           <script>
+           
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: {lat: -22.992238 , lng: -43.254853}
+  });
+
+  setMarkers(map);
+}
+
+
+var beaches = [
+  ['Bondi Beach', -22.988653, -43.246707],
+  ['Coogee Beach', -22.990567, -43.256296],
+  ['Cronulla Beach', -22.995344, -43.254938],
+  ['Manly Beach', -22.987920, -43.248172],
+  ['Maroubra Beach', -22.991026, -43.251293]
+];
+
+function setMarkers(map) {
+ 
+  var image = {
+    url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+    
+    size: new google.maps.Size(20, 32),
+    
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(0, 32)
+  };
+  
+  var shape = {
+    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+    type: 'poly'
+  };
+  for (var i = 0; i < beaches.length; i++) {
+    var beach = beaches[i];
+    var marker = new google.maps.Marker({
+      position: {lat: beach[1], lng: beach[2]},
+      map: map,
+      icon: image,
+      shape: shape,
+      title: beach[0],
+      zIndex: beach[3]
+    });
+  }
+}
+
+            </script>
+           
         </header>
       
-        <!-- Sobre Section-->
-        <section class="page-section bg-primary text-white mb-0" id="sobre">
-            <div class="container">
-                <!-- About Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-white">Sobre</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- About Section Content-->
-                <div class="row">
-                    <div class="col-lg-4 ml-auto"><p class="lead">Em momentos difíceis, ajudar ro próximo é fundamental. Uma das dificuldades é saber onde você pode fazer a sua parte. <br> O DOACENTRO é um aplicativo com o intuito de conectar pessoas que querem contribuir com as outras que já estão fazendo esse trabalho.</p></div>
-                    <div class="col-lg-4 mr-auto"><p class="lead">Muitas pessoas que precisam de ajuda não tem acesso á internet ou telefone. Mas Sempre há aquelas pessoas que estão dispostas a ajudar. Ajude doando itens para centros de distribuição de cestas básicas. Abra o mapa e ache o centro mais próximo de você</p></div>
-                </div>
-                <!-- About Section Button-->
-                <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="cadastro.jsp">Cadastre-se</a>
-                </div>
-            </div>
-        </section>
-        <!-- Contact Section-->
+        
        
           <!-- Footer-->
         <footer class="footer text-center">
@@ -274,7 +319,10 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+
         <!-- Third party plugin JS-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCApTD6jKQWd37cr1BJi0zc1Sx77WGWpV4&callback=initMap"
+        async defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Contact form JS-->
         <script src="assets/mail/jqBootstrapValidation.js"></script>

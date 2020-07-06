@@ -1,7 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"%>
 
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -18,7 +16,53 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet"/>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+            $(document).ready(function() {
+                $("#cadastrar").click(function() {
+                    event.preventDefault();
+
+                    var nome_digitado = $("#nomeUsuario").val();
+                    var telefone1_digitado = $("#telefone1").val();
+                    var numeroCpfCnpjUsuario_digitado = $("#numeroCpfCnpjUsuario").val();
+                    var email_digitado = $("#emailUsuario").val();
+                    var senha_digitado = $("#senha").val();
+                    var confirmarSenha_digitado = $("#confirmaSenha").val();
+                    
+
+                    $.ajax(
+                        {
+                            url: "cadastrarUsuario?"+ 
+                            "nomeUsuario="+nome_digitado+
+                            "&telefone1="+telefone1_digitado+
+                            "&numeroCpfCnpjUsuario="+numeroCpfCnpjUsuario_digitado+
+                            "&emailUsuario="+email_digitado+
+                            "&senha="+senha_digitado+
+                            "&confirmaSenha="+confirmarSenha_digitado,
+                            contentType: "charset=UTF-8",
+                            success: function(retorno) {
+                                if (retorno.trim()=="ok") {
+                                    location.replace("mensagem_cadastrar.jsp");  //sucesso
+                                    } 
+                                    else {
+                                        //erro
+                                        $ ("#mostrarErro").html (retorno);
+                                        $('#myModal').modal('show'); 
+                                    
+                                }
+                            }
+                        }
+                    );
+                });
+               
+            });
+</script>
+
+
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -36,42 +80,136 @@
         </nav>
         <!-- Masthead-->
         <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <!-- Masthead Avatar Image--><img class="masthead-avatar mb-5" src="assets/img/Logo.png" alt="" /><!-- Masthead Heading-->
-                <h1 class="masthead-heading text-uppercase mb-0">DoaCentro</h1>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Masthead Subheading-->
-                <p class="masthead-subheading font-weight-light mb-0">Conectando a bondade</p>
-            </div>
+           
         </header>
-      
-        <!-- Sobre Section-->
         <section class="page-section bg-primary text-white mb-0" id="sobre">
-            <div class="container">
-                <!-- About Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-white">Sobre</h2>
-                <!-- Icon Divider-->
+        
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Avatar Image--><img class="mx-auto rounded-circle" src="assets/img/cake.png" style="width: 200px; height: 200px;" alt="" /><!-- Masthead Heading-->
+               
                 <div class="divider-custom divider-light">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <!-- About Section Content-->
-                <div class="row">
-                    <div class="col-lg-4 ml-auto"><p class="lead">Em momentos difíceis, ajudar ro próximo é fundamental. Uma das dificuldades é saber onde você pode fazer a sua parte. <br> O DOACENTRO é um aplicativo com o intuito de conectar pessoas que querem contribuir com as outras que já estão fazendo esse trabalho.</p></div>
-                    <div class="col-lg-4 mr-auto"><p class="lead">Muitas pessoas que precisam de ajuda não tem acesso á internet ou telefone. Mas Sempre há aquelas pessoas que estão dispostas a ajudar. Ajude doando itens para centros de distribuição de cestas básicas. Abra o mapa e ache o centro mais próximo de você</p></div>
+                
+                
+            </div>
+            <div class="container d-flex align-items-center flex-column">
+            <form action="#" method="#">
+                
+                <h5 class="font-weight-light my-4">Dados do Usuário</h5>
+                <div class="form-row">
+                    
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="nomeUsuario">Nome</label>
+                            <input class="form-control py-3" id="nomeUsuario" name="nomeUsuario" type="text" placeholder="Digite seu nome" value=""/>
+                        </div>
+                    </div>
+                    
+
                 </div>
-                <!-- About Section Button-->
+            
+                <div class="form-row">    
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="small mb-1.1" for="telefone1">Telefone</label>
+                            <input class="telefone1 form-control py-3" id="telefone1" name="telefone1" type="text" placeholder="Telefone" value=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="small mb-1" for="numeroCpfCnpjUsuario" >CPF/CNPJ</label>
+                            <input class="form-control py-3 " id="numeroCpfCnpjUsuario" name="numeroCpfCnpjUsuario" type="text" value="" placeholder="Digite seu documento"/>
+                        </div>
+                    </div>
+
+                     <div class="col-md-3">    </div>
+                </div>
+
+                <div class="form-row">    
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="emailUsuario">Email</label>
+                            <input class="form-control py-3" id="emailUsuario" name="emailUsuario" type="email" placeholder="Digite seu email" value=""/>
+                        </div>   
+                    </div>
+
+
+                     
+                </div>
+
+
+                   <div class="form-row">
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="senha">Senha</label>
+                            <input class="form-control py-3" id="senha" name="senha" type="password" placeholder="Digite sua senha" value=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="confirmaSenha">Confirme sua Senha</label>
+                            <input class="form-control py-3" id="confirmaSenha" name="confirmaSenha" type="password" placeholder="Repita sua senha" value=""/>
+                        </div>
+                    </div>
+                            
+                   
+
+                </div>
+                   
+                <div class="form-row">
+                    <div class="col-md-3"></div> <span id='result'></span>
+                    
+                </div>
+                
+                <div class="form-row">
+                    <div class="col-md-3"></div>  <span id='message'></span>
+                    
+                </div>   
+
+               
+
+                    
                 <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="cadastro.jsp">Cadastre-se</a>
+                    <button class="btn btn-xl btn-outline-light" id="cadastrar">Cadastrar</button>
                 </div>
+                                                  
+                   
+                <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Atenção!</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                          <div class="modal-body py-5">    
+                            <h6 class="text-danger text-center"> 
+                                <div class="" id="mostrarErro"></div>
+                            </h6>
+                          </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-dark" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
+            
+            </form>
             </div>
         </section>
+        <!-- Sobre Section-->
+        
         <!-- Contact Section-->
        
           <!-- Footer-->

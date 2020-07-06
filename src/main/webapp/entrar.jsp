@@ -1,6 +1,11 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"%>
-
-
+<%
+  if (session.getAttribute("user") != null)
+  {
+    String address =  "dashboard.jsp";
+    response.sendRedirect(address);
+  }
+%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -9,9 +14,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Conectando a bondade" />
         <meta name="author" content="Grupo KWR" />
-        <title>DoaCentro</title>
+        <title>Login - DoaCentro</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon-16x16.png" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon-16x16.png"/>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -19,6 +24,44 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+
+        <!-- Script Ajax -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#acessar").click(function() {
+                    event.preventDefault();
+                  
+                    var login_digitado = $("#login").val();
+                    var senha_digitada = $("#senha").val();
+
+                    $.ajax(
+                        {
+                            url: "login?"+
+                            "login="+login_digitado+
+                            "&senha="+senha_digitada,
+
+                            success: function(retorno) {
+                                if (retorno.trim() == "ok") {
+                                    //sucesso
+                                    location.replace("dashboard.jsp");
+                                    } 
+                                    else {
+                                        //erro
+                                        $ ("#mostrarErro").html (retorno);
+                                        $('#myModal').modal('show'); 
+                                    
+                                }
+                            }
+                        }
+                    );
+                });
+               
+            });
+     
+        </script>
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -27,51 +70,97 @@
                 <a class="navbar-brand js-scroll-trigger" href="index.jsp">DoaCentro</a><button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#sobre">Sobre</a></li>
+                        
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="cadastro.jsp">Cadastre-se</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="entrar.jsp">Entrar</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="">Entrar</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- Masthead-->
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <!-- Masthead Avatar Image--><img class="masthead-avatar mb-5" src="assets/img/Logo.png" alt="" /><!-- Masthead Heading-->
-                <h1 class="masthead-heading text-uppercase mb-0">DoaCentro</h1>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
+        
+        <!-- Login Section-->
+        <section class="page-section bg-primary text-white mb-0 mt-5" id="pageLogin">
+           
+           
+            <form action="#" method="#">
+                <main>
+
+                    <div id="layoutAuthentication">
+        
+                        <div id="layoutAuthentication_content">
+        
+                            <div class="container">
+    
+                                <div class="row justify-content-center">
+
+                                    <div class="col-lg-5 py-0.5">
+                                        
+                                        <div class="text-center">
+                                            <img class="masthead-avatar mb-5" src="assets/img/logo transparente.png" alt="logo-transparente-doacentro" />
+                                        </div>
+
+                                        <div class="form-group mt-4">
+                                            <label class="mb-2" for="login">Email ou CPF/CNPJ.</label>
+                                            <input class="form-control py-4" id="login" name="login" type="text" placeholder="Digite seu email ou CPF/CNPJ"/>
+                                        </div>
+
+                                        <div class="form-group mt-2">
+                                            <label class="mb-2 mt-2" for="senha">Senha</label>
+                                            <input class="form-control py-4" id="senha" name="senha" type="password" placeholder="Digite sua senha"/>
+                                        </div>
+                                        
+                                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small text-dark" href="esqueci_senha.jsp">Esqueceu senha?</a>
+                                            <button class="btn btn-outline-light" id="acessar">Acessar</button>                                            
+                                        </div>
+
+                                        <a class="small text-dark" href="index.jsp">Voltar</a>
+
+                                        <div class="text-center py-4">
+                                            <a href="#"><img src="assets/img/Botão Facebook.png"></a>
+                                            <a href="#"><img src="assets/img/Botão Google.png"></a>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <div class="small mt-1"><a class="text-dark" href="cadastro.jsp">Novo no DoaCentro? Cadastre-se!</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                            
+                        </div>
+                    </div>
+        
+                </main>
+            
+            </form>
+
+            
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Atenção!</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                      <div class="modal-body py-5">    
+                        <h6 class="text-danger text-center"> 
+                            <div class="" id="mostrarErro"></div>
+                        </h6>
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
                 </div>
-                <!-- Masthead Subheading-->
-                <p class="masthead-subheading font-weight-light mb-0">Conectando a bondade</p>
-            </div>
-        </header>
-      
-        <!-- Sobre Section-->
-        <section class="page-section bg-primary text-white mb-0" id="sobre">
-            <div class="container">
-                <!-- About Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-white">Sobre</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- About Section Content-->
-                <div class="row">
-                    <div class="col-lg-4 ml-auto"><p class="lead">Em momentos difíceis, ajudar ro próximo é fundamental. Uma das dificuldades é saber onde você pode fazer a sua parte. <br> O DOACENTRO é um aplicativo com o intuito de conectar pessoas que querem contribuir com as outras que já estão fazendo esse trabalho.</p></div>
-                    <div class="col-lg-4 mr-auto"><p class="lead">Muitas pessoas que precisam de ajuda não tem acesso á internet ou telefone. Mas Sempre há aquelas pessoas que estão dispostas a ajudar. Ajude doando itens para centros de distribuição de cestas básicas. Abra o mapa e ache o centro mais próximo de você</p></div>
-                </div>
-                <!-- About Section Button-->
-                <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="cadastro.jsp">Cadastre-se</a>
-                </div>
-            </div>
+              </div>
+
+
         </section>
+
         <!-- Contact Section-->
        
           <!-- Footer-->
@@ -83,7 +172,9 @@
                     <!-- Footer Social Icons-->
                     <div class="col-lg-12 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Redes Sociais</h4>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a><a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a><a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a><a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-github"></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
                     </div>
                     
                 </div>
